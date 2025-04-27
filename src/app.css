@@ -1,0 +1,146 @@
+/* poppins-regular - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 400;
+	src: url('/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+}
+
+/* poppins-italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: italic;
+	font-weight: 400;
+	src: url('/fonts/Poppins/Poppins-Italic.ttf') format('truetype');
+}
+
+/* poppins-600 - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 600;
+	src: url('/fonts/Poppins/Poppins-SemiBold.ttf') format('truetype');
+}
+
+/* poppins-600italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: italic;
+	font-weight: 600;
+	src: url('/fonts/Poppins/Poppins-SemiBoldItalic.ttf') format('truetype');
+}
+
+/* poppins-700 - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	src: url('/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+}
+
+/* poppins-700italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: italic;
+	font-weight: 700;
+	src: url('/fonts/Poppins/Poppins-BoldItalic.ttf') format('truetype');
+}
+
+/* poppins-900 - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 900;
+	src: url('/fonts/Poppins/Poppins-Black.ttf') format('truetype');
+}
+
+/* poppins-900italic - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Poppins';
+	font-style: italic;
+	font-weight: 900;
+	src: url('/fonts/Poppins/Poppins-BlackItalic.ttf') format('truetype');
+}
+
+/* audiowide-regular - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'Audiowide';
+	font-style: normal;
+	font-weight: 400;
+	src: url('/fonts/Audiowide/Audiowide-Regular.ttf') format('truetype');
+}
+
+/* ibm-plex-mono-regular - latin */
+@font-face {
+	font-display: swap;
+	font-family: 'IBM Plex Mono';
+	font-style: normal;
+	font-weight: 400;
+	src: url('/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
+}
+
+@import 'tailwindcss';
+@config '../tailwind.config.js';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@view-transition {
+	navigation: auto;
+}
+
+@theme {
+	--font-sans: Poppins, sans-serif;
+}
+
+.glow-overlay {
+	@apply pointer-events-none absolute inset-0 z-10 transition-all duration-400 will-change-[mask] select-none;
+	--glow-size: 25rem;
+	opacity: var(--glow-opacity, 0);
+	mask: radial-gradient(
+		var(--glow-size) var(--glow-size) at var(--glow-x) var(--glow-y),
+		var(--glow-color) 1%,
+		transparent 50%
+	);
+}
+
+.font-display {
+	font-family: 'Audiowide', sans-serif;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+:root {
+	--selection-bg: #2dd4bf; /* tailwind.colors.teal.400 */
+	--selection-text: #0f172a; /* tailwind.colors.slate.900 */
+	--focus-outline: #0f172a; /* tailwind.colors.slate.900 */
+}
+
+html.dark {
+	--selection-bg: #5eead4; /* tailwind.colors.teal.300 */
+	--selection-text: #0f172a; /* tailwind.colors.slate.900 */
+	--focus-outline: #f1f5f9; /* tailwind.colors.slate.100 */
+}
+
+::selection {
+	background-color: var(--selection-bg);
+	color: var(--selection-text);
+}

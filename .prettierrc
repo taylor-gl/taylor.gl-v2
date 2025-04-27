@@ -1,0 +1,29 @@
+{
+	"useTabs": true,
+	"singleQuote": true,
+	"trailingComma": "es5",
+	"printWidth": 100,
+	"semi": true,
+	"plugins": [
+		"prettier-plugin-svelte",
+		"@ianvs/prettier-plugin-sort-imports",
+		"prettier-plugin-tailwindcss"
+	],
+	"importOrder": [
+		"<BUILTIN_MODULES>",
+		"<THIRD_PARTY_MODULES>",
+		"^\\$app/(.*)$",
+		"^\\$lib/(.*)$",
+		"^[./]"
+	],
+	"tailwindConfig": "./tailwind.config.js",
+	"tailwindFunctions": ["twMerge", "clsx", "cn"],
+	"overrides": [
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte"
+			}
+		}
+	]
+}
