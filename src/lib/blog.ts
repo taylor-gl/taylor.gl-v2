@@ -1,34 +1,10 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import matter from 'gray-matter';
-import { marked, Marked, Renderer } from 'marked';
-import markedFootnote from 'marked-footnote';
-import { gfmHeadingId } from 'marked-gfm-heading-id';
+import { Marked } from 'marked';
+import { createMarkdownRenderer } from './markdown';
 
-const renderer = new Renderer();
-const originalImage = renderer.image.bind(renderer);
-
-renderer.image = (token) => {
-	const { href, title, text } = token;
-	if (text.startsWith('Figure:')) {
-		const figcaption = text.substring(7).trim();
-		return `
-      <figure>
-        <img src="${href}" alt="${figcaption}" ${title ? `title="${title}"` : ''}>
-        <figcaption>${figcaption}</figcaption>
-      </figure>
-    `;
-	}
-	return originalImage(token);
-};
-
-marked.use(
-	markedFootnote({
-		prefixId: 'footnote-',
-	})
-);
-marked.use(gfmHeadingId());
-marked.use({ renderer });
+const marked = createMarkdownRenderer();
 
 export interface BlogPost {
 	slug: string;
