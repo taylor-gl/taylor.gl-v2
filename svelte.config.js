@@ -13,6 +13,16 @@ const config = {
 		adapter: adapter({
 			fallback: 'app.html',
 		}),
+		prerender: {
+			handleHttpError: ({ path, referrer, message }) => {
+				// Ignore 404s for external links during prerendering
+				if (message.includes('404')) {
+					console.warn(`Ignoring 404 for ${path} (linked from ${referrer})`);
+					return;
+				}
+				throw new Error(message);
+			},
+		},
 	},
 };
 

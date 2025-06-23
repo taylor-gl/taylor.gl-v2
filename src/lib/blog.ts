@@ -3,6 +3,7 @@ import { join } from 'path';
 import matter from 'gray-matter';
 import { marked, Marked, Renderer } from 'marked';
 import markedFootnote from 'marked-footnote';
+import { gfmHeadingId } from 'marked-gfm-heading-id';
 
 const renderer = new Renderer();
 const originalImage = renderer.image.bind(renderer);
@@ -26,6 +27,7 @@ marked.use(
 		prefixId: 'footnote-',
 	})
 );
+marked.use(gfmHeadingId());
 marked.use({ renderer });
 
 export interface BlogPost {

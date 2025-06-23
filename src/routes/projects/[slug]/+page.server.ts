@@ -1,6 +1,11 @@
 import { error } from '@sveltejs/kit';
 import { getProjects } from '$lib/projects';
 
+export function entries() {
+	const projects = getProjects();
+	return projects.map((project) => ({ slug: project.slug }));
+}
+
 export const load = async ({ params }: { params: { slug: string } }) => {
 	const { slug } = params;
 	const projects = getProjects();

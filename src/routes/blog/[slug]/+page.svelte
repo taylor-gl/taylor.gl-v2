@@ -52,7 +52,7 @@
 		<div class="mb-8 flex flex-wrap gap-2">
 			{#each post.tags as tag (tag)}
 				<a
-					href="/blog?tag={tag}"
+					href="/blog/tag/{tag}"
 					class="no-underline hover:underline focus:underline"
 					style="view-transition-name: post-tag-{post.slug}-{tag}"
 				>
