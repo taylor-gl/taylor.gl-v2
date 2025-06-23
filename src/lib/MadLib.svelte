@@ -501,7 +501,7 @@
 <button
 	bind:this={bubbleElement}
 	{...restProps}
-	class={twMerge('group relative inline-block', restProps.class)}
+	class={twMerge('group madlib-bubble relative inline-block', restProps.class)}
 	type="button"
 >
 	<svg
@@ -526,3 +526,20 @@
 		{currentWord}
 	</span>
 </button>
+
+<noscript>
+	<style>
+		.madlib-bubble {
+			position: relative;
+			background: transparent;
+		}
+		.madlib-bubble::before {
+			content: '';
+			position: absolute;
+			inset: 10% 0;
+			background: rgb(45 212 191);
+			border-radius: 0.5rem;
+			z-index: -1;
+		}
+	</style>
+</noscript>
