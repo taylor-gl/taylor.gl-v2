@@ -223,8 +223,7 @@
         />
       </div>
       <h1 class="text-7xl/30 font-black">
-        <span class="font-display text-slate-900 dark:text-slate-100">Taylor&nbsp;G.&nbsp;Lunt</span
-        >
+        <span class="font-display text-slate-900 dark:text-slate-100">Taylor G. Lunt</span>
       </h1>
       <div class="text-2xl/12 font-bold tracking-wider">
         I'm
@@ -234,17 +233,17 @@
           wordList={PASSIONATE_ADJECTIVES}
           onWordChange={(word: string) => (passionateWord = word)}
         />
-        Full-Stack&nbsp;Developer who builds&nbsp;
+        Full-Stack Developer who builds
         <MadLib
           word={lovelyWord1 ?? ''}
           wordList={LOVELY_ADJECTIVES}
           onWordChange={(word: string) => (lovelyWord1 = word)}
-        />,&nbsp;
+        />,
         <MadLib
           word={lovelyWord2 ?? ''}
           wordList={LOVELY_ADJECTIVES}
           onWordChange={(word: string) => (lovelyWord2 = word)}
-        />,&nbsp;software.
+        />, software.
       </div>
     </section>
 
