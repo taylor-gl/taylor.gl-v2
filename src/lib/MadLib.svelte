@@ -64,6 +64,7 @@
   let scrambleIntervals = $state<ReturnType<typeof setInterval>[]>([]);
   let mousePosition = { x: 0, y: 0 };
   let prefersReducedMotion = $state(false);
+  let isTouchDevice = $state(false);
 
   const { word: initialWord, wordList = [], onWordChange, ...restProps } = $props();
 
@@ -460,6 +461,8 @@
     const listener = (e: { matches: boolean }) => (prefersReducedMotion = e.matches);
     mediaQuery.addEventListener('change', listener);
 
+    isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
     setupWordElement();
     initializeBubbleShape();
     animatable = createBubbleAnimatable();
@@ -473,7 +476,7 @@
       requestAnimationFrame(animationLoop);
     };
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isTouchDevice) {
       window.addEventListener('mousemove', handleMouseMove);
       bubbleElement.addEventListener('mouseenter', handleMouseEnter);
       bubbleElement.addEventListener('mouseleave', handleMouseLeave);
@@ -486,7 +489,7 @@
 
     return () => {
       mediaQuery.removeEventListener('change', listener);
-      if (!prefersReducedMotion) {
+      if (!prefersReducedMotion && !isTouchDevice) {
         window.removeEventListener('mousemove', handleMouseMove);
         bubbleElement.removeEventListener('mouseenter', handleMouseEnter);
         bubbleElement.removeEventListener('mouseleave', handleMouseLeave);
