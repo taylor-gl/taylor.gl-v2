@@ -217,7 +217,7 @@
           class="absolute inset-0 rounded-full border-4 border-slate-900/20 dark:border-slate-100/20"
         ></div>
         <img
-          src="/portrait.png"
+          src="/portrait.jpg"
           alt="A portrait of Taylor G. Lunt"
           class="h-full w-full rounded-full object-cover"
         />
