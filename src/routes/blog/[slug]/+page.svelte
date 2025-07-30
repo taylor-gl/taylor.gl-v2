@@ -49,16 +49,23 @@
         {post.title}
       </h1>
     </div>
-    <div class="mb-8 flex flex-wrap gap-2">
-      {#each post.tags as tag (tag)}
-        <a
-          href="/blog/tag/{tag}"
-          class="no-underline hover:underline focus:underline"
-          style="view-transition-name: post-tag-{post.slug}-{tag}"
-        >
-          <TextBubble>{tag}</TextBubble>
-        </a>
-      {/each}
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <div class="flex flex-wrap gap-2">
+        {#each post.tags as tag (tag)}
+          <a
+            href="/blog/tag/{tag}"
+            class="no-underline hover:underline focus:underline"
+            style="view-transition-name: post-tag-{post.slug}-{tag}"
+          >
+            <TextBubble>{tag}</TextBubble>
+          </a>
+        {/each}
+      </div>
+      <a
+        href="/blog/28"
+        class="caveat-lector text-teal-700 no-underline hover:underline focus:underline dark:text-teal-500"
+        >caveat lector</a
+      >
     </div>
     <div
       class="prose prose-xl prose-a:text-teal-600 prose-pre:whitespace-pre-wrap prose-code:whitespace-pre-wrap dark:prose-invert dark:prose-a:text-teal-300 max-w-none"
@@ -121,5 +128,9 @@
 
   :global(li:target, sup:target) {
     scroll-margin-top: 8rem;
+  }
+  .caveat-lector {
+    font-family: 'Allura', cursive;
+    font-size: 2rem;
   }
 </style>

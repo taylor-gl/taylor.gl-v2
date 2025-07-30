@@ -72,7 +72,7 @@
 
 /* audiowide-regular - latin */
 @font-face {
-  font-display: swap;
+  font-display: fallback;
   font-family: 'Audiowide';
   font-style: normal;
   font-weight: 400;
@@ -86,6 +86,15 @@
   font-style: normal;
   font-weight: 400;
   src: url('/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
+}
+
+/* allura-regular - latin */
+@font-face {
+  font-display: block;
+  font-family: 'Allura';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/Allura/Allura-Regular.ttf') format('truetype');
 }
 
 @import 'tailwindcss';
