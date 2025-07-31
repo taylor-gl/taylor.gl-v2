@@ -54,6 +54,7 @@
     "marked": "^15.0.12",
     "marked-footnote": "^1.2.4",
     "marked-gfm-heading-id": "^4.1.1",
+    "marked-smartypants": "^1.1.10",
     "postcss": "^8.5.3",
     "tailwind-merge": "^3.2.0"
   },

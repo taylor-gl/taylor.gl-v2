@@ -1,6 +1,7 @@
 import { Marked, Renderer } from 'marked';
 import markedFootnote from 'marked-footnote';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
+import { markedSmartypants } from 'marked-smartypants';
 
 export function createMarkdownRenderer() {
   const renderer = new Renderer();
@@ -42,6 +43,7 @@ export function createMarkdownRenderer() {
     })
   );
   marked.use(gfmHeadingId());
+  marked.use(markedSmartypants());
   marked.use({ renderer });
 
   return marked;

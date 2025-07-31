@@ -133,4 +133,22 @@
     font-family: 'Allura', cursive;
     font-size: 2rem;
   }
+
+  :global(.prose figure img) {
+    outline: 1px solid rgb(226, 232, 240);
+  }
+
+  :global(.dark .prose figure img) {
+    outline: 1px solid rgb(51, 65, 85);
+  }
+
+  :global(.prose figure) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  :global(.prose figure img) {
+    margin: 0;
+  }
 </style>
