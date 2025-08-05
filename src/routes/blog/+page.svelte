@@ -18,9 +18,16 @@
       class="mb-8 inline-block text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
       ><span aria-hidden="true">←</span> Back to home</a
     >
-    <h1 class="mb-8 text-4xl font-bold text-slate-900 dark:text-slate-100">
+    <h1 class="mb-2 text-4xl font-bold text-slate-900 dark:text-slate-100">
       {tag ? `Posts tagged "${tag}"` : 'All Blog Posts'}
     </h1>
+    <div class="mb-8">
+      <a
+        href="/rss.xml"
+        class="text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+        >RSS (via Substack)</a
+      >
+    </div>
     <ul class="space-y-6">
       {#each posts as post (post.slug)}
         <li class="relative">

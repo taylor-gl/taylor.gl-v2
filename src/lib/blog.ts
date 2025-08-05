@@ -87,3 +87,31 @@ export function getBlogPosts(): BlogPost[] {
 
   return posts;
 }
+
+export function getBlogPost(slug: string): BlogPost | undefined {
+  const postsDirectory = join(process.cwd(), 'src/content/blog');
+  const filePath = join(postsDirectory, `${slug}.md`);
+
+  try {
+    const fileContents = readFileSync(filePath, 'utf8');
+    const { data, content } = matter(fileContents);
+
+    if (data.draft === true || data.draft === undefined) {
+      return undefined;
+    }
+
+    return {
+      slug: slug,
+      title: data.title as string,
+      preview: generatePreview(content),
+      content: marked.parse(content) as string,
+      tags: ((data.tags as string[]) || []).sort(),
+      starred: data.starred === true,
+    };
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+      return undefined;
+    }
+    throw error;
+  }
+}

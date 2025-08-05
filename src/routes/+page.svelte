@@ -443,7 +443,7 @@
     </section>
 
     <section class="mx-auto max-w-[800px] px-8 py-16">
-      <div class="flex justify-center gap-8">
+      <div class="flex items-center justify-center gap-8">
         <a
           href="https://github.com/taylor-gl"
           target="_blank"
@@ -463,6 +463,17 @@
           aria-label="LinkedIn Profile"
         >
           <iconify-icon icon="carbon:logo-linkedin" class="text-3xl" aria-hidden="true"
+          ></iconify-icon>
+        </a>
+
+        <a
+          href="https://taylorgordonlunt.substack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+          aria-label="Substack Profile"
+        >
+          <iconify-icon icon="simple-icons:substack" class="text-2xl" aria-hidden="true"
           ></iconify-icon>
         </a>
 

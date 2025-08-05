@@ -73,6 +73,15 @@
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       {@html post.content}
     </div>
+    <div class="mt-8 text-right">
+      <a
+        href="/blog/{post.slug}/secret-rich-text"
+        class="text-teal-600 opacity-10 transition-opacity hover:opacity-100 focus:opacity-100"
+        aria-label="Copy rich text version of this post"
+      >
+        .rtf
+      </a>
+    </div>
   </div>
 </div>
 
