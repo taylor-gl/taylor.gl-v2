@@ -5,11 +5,11 @@ import { markedSmartypants } from 'marked-smartypants';
 
 export function createMarkdownRenderer() {
   const renderer = new Renderer();
-  const originalImage = renderer.image.bind(renderer);
+  const originalImage = renderer.image;
 
-  renderer.image = (token) => {
+  renderer.image = function (token) {
     const { href, title, text } = token;
-    if (text.startsWith('Figure:')) {
+    if ((text || '').startsWith('Figure:')) {
       const figcaption = text.substring(7).trim();
       const isVideo = href.toLowerCase().endsWith('.webm') || href.toLowerCase().endsWith('.mp4');
 
@@ -32,7 +32,7 @@ export function createMarkdownRenderer() {
       `;
       }
     }
-    return originalImage(token);
+    return originalImage.call(this, token);
   };
 
   const marked = new Marked();
