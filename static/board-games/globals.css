@@ -1,0 +1,9 @@
+.body {
+   background-color: #fffff8;
+   color: #111111;
+   line-height: 1.5;
+ }
+
+button {
+  font-family: inherit;
+}

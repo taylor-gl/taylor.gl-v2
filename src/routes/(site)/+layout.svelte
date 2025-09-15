@@ -1,5 +1,5 @@
 <script lang="ts">
-  import '../app.css';
+  import '../../app.css';
   import { onNavigate } from '$app/navigation';
   import HeaderActions from '$lib/components/HeaderActions.svelte';
   import '$lib/stores/theme';

@@ -28,18 +28,14 @@ export default ts.config(
         parser: ts.parser,
       },
     },
+    rules: {
+      'svelte/no-at-html-tags': 'off',
+    },
   },
   {
     files: ['src/lib/MadLib.svelte'],
     rules: {
       'svelte/no-dom-manipulating': 'off',
-      'svelte/no-at-html-tags': 'off',
-    },
-  },
-  {
-    files: ['src/routes/blog/\\[slug\\]/+page.svelte'],
-    rules: {
-      'svelte/no-at-html-tags': 'off',
     },
   }
 );
