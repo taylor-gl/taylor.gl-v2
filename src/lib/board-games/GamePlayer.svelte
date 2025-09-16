@@ -196,173 +196,175 @@
 
 <div>
   <div class="chess-game">
-    <div class="card">
-      <div class="player-selectors">
-        <div class="selector">
-          <div>
-            <label for="game-select">Game</label>
-            <select
-              id="game-select"
-              bind:value={selectedGameName}
-              class="player-select"
-              onchange={(e) => changeGame(e.target.value)}
-            >
-              <option value="fantastical-chess">Fantastical Chess</option>
-              <option value="regular-chess">Chess</option>
-              <option value="4-in-a-row">4 in a Row</option>
-              <option value="hugs-and-kisses">Hugs and Kisses</option>
-              <option value="go-9x9">Go (9x9)</option>
-              <option value="shove">Shove (7x7)</option>
-            </select>
-          </div>
-        </div>
-        {#if playerOneType === 'AI Model' || playerTwoType === 'AI Model'}
+    <div class="scroll-x">
+      <div class="card">
+        <div class="player-selectors">
           <div class="selector">
             <div>
-              <label for="api-key">OpenRouter API Key</label>
-              <input
-                id="api-key"
+              <label for="game-select">Game</label>
+              <select
+                id="game-select"
+                bind:value={selectedGameName}
                 class="player-select"
-                type={apiKeyFocused ? 'text' : 'password'}
-                value={openRouterApiKey}
-                oninput={(e) => dispatch('saveApiKey', e.target.value)}
-                placeholder="sk-or-v1-..."
-                onfocus={() => (apiKeyFocused = true)}
-                onblur={() => (apiKeyFocused = false)}
-                autocomplete="off"
-                spellcheck="false"
-              />
+                onchange={(e) => changeGame(e.target.value)}
+              >
+                <option value="fantastical-chess">Fantastical Chess</option>
+                <option value="regular-chess">Chess</option>
+                <option value="4-in-a-row">4 in a Row</option>
+                <option value="hugs-and-kisses">Hugs and Kisses</option>
+                <option value="go-9x9">Go (9x9)</option>
+                <option value="shove">Shove (7x7)</option>
+              </select>
             </div>
           </div>
-        {/if}
-      </div>
-      <div class="player-selectors">
-        <div class="selector">
-          <div>
-            <label for="player-one-type"
-              >{game.gameName === 'go-9x9' || game.gameName === 'shove'
-                ? 'Black'
-                : game.gameName === 'regular-chess' || game.gameName === 'fantastical-chess'
-                  ? 'White'
-                  : 'Red'}</label
-            >
-            <select
-              id="player-one-type"
-              bind:value={playerOneType}
-              class="player-select"
-              disabled={waitingOnPlayerOneAI}
-            >
-              <option>Human</option>
-              <option>Random</option>
-              <option>AI Model</option>
-            </select>
-          </div>
-          <div>
-            {#if playerOneType === 'AI Model'}
-              <label for="player-one-model">Model</label>
-              <select
-                id="player-one-model"
-                bind:value={playerOneModel}
-                class="player-select"
-                disabled={waitingOnPlayerOneAI}
-              >
-                <option value="" disabled>Choose a model...</option>
-                <option>GPT-3.5-turbo (v0613; June 2023)</option>
-                <option>GPT-4o (2024-05-13; May 2024)</option>
-                <option>GPT-4.1 (April 2025)</option>
-                <option>GPT-5 (August 2025)</option>
-              </select>
-            {/if}
-          </div>
-          {#if playerOneType === 'AI Model' && modelSupportsReasoning(playerOneModel)}
-            <div>
-              <label for="player-one-effort">Reasoning Effort</label>
-              <select
-                id="player-one-effort"
-                bind:value={playerOneEffort}
-                class="player-select"
-                disabled={waitingOnPlayerOneAI}
-              >
-                <option value="" disabled>Choose effort...</option>
-                <option value="high">high</option>
-                <option value="medium">medium</option>
-                <option value="low">low</option>
-                <option value="minimal">minimal</option>
-              </select>
+          {#if playerOneType === 'AI Model' || playerTwoType === 'AI Model'}
+            <div class="selector">
+              <div>
+                <label for="api-key">OpenRouter API Key</label>
+                <input
+                  id="api-key"
+                  class="player-select"
+                  type={apiKeyFocused ? 'text' : 'password'}
+                  value={openRouterApiKey}
+                  oninput={(e) => dispatch('saveApiKey', e.target.value)}
+                  placeholder="sk-or-v1-..."
+                  onfocus={() => (apiKeyFocused = true)}
+                  onblur={() => (apiKeyFocused = false)}
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </div>
             </div>
           {/if}
         </div>
-        <div class="selector">
-          <div>
-            <label for="player-two-type"
-              >{game.gameName === 'go-9x9' || game.gameName === 'shove'
-                ? 'White'
-                : game.gameName === 'regular-chess' || game.gameName === 'fantastical-chess'
+        <div class="player-selectors">
+          <div class="selector">
+            <div>
+              <label for="player-one-type"
+                >{game.gameName === 'go-9x9' || game.gameName === 'shove'
                   ? 'Black'
-                  : 'Yellow'}</label
-            >
-            <select
-              id="player-two-type"
-              bind:value={playerTwoType}
-              class="player-select"
-              disabled={waitingOnPlayerTwoAI}
-            >
-              <option>Human</option>
-              <option>Random</option>
-              <option>AI Model</option>
-            </select>
-          </div>
-          <div>
-            {#if playerTwoType === 'AI Model'}
-              <label for="player-two-model">Model</label>
-              <select
-                id="player-two-model"
-                bind:value={playerTwoModel}
-                class="player-select"
-                disabled={waitingOnPlayerTwoAI}
+                  : game.gameName === 'regular-chess' || game.gameName === 'fantastical-chess'
+                    ? 'White'
+                    : 'Red'}</label
               >
-                <option value="" disabled>Choose a model...</option>
-                <option>GPT-3.5-turbo (v0613; June 2023)</option>
-                <option>GPT-4o (2024-05-13; May 2024)</option>
-                <option>GPT-4.1 (April 2025)</option>
-                <option>GPT-5 (August 2025)</option>
-              </select>
-            {/if}
-          </div>
-          {#if playerTwoType === 'AI Model' && modelSupportsReasoning(playerTwoModel)}
-            <div>
-              <label for="player-two-effort">Reasoning Effort</label>
               <select
-                id="player-two-effort"
-                bind:value={playerTwoEffort}
+                id="player-one-type"
+                bind:value={playerOneType}
                 class="player-select"
-                disabled={waitingOnPlayerTwoAI}
+                disabled={waitingOnPlayerOneAI}
               >
-                <option value="" disabled>Choose effort...</option>
-                <option value="high">high</option>
-                <option value="medium">medium</option>
-                <option value="low">low</option>
-                <option value="minimal">minimal</option>
+                <option>Human</option>
+                <option>Random</option>
+                <option>AI Model</option>
               </select>
             </div>
-          {/if}
+            <div>
+              {#if playerOneType === 'AI Model'}
+                <label for="player-one-model">Model</label>
+                <select
+                  id="player-one-model"
+                  bind:value={playerOneModel}
+                  class="player-select"
+                  disabled={waitingOnPlayerOneAI}
+                >
+                  <option value="" disabled>Choose a model...</option>
+                  <option>GPT-3.5-turbo (v0613; June 2023)</option>
+                  <option>GPT-4o (2024-05-13; May 2024)</option>
+                  <option>GPT-4.1 (April 2025)</option>
+                  <option>GPT-5 (August 2025)</option>
+                </select>
+              {/if}
+            </div>
+            {#if playerOneType === 'AI Model' && modelSupportsReasoning(playerOneModel)}
+              <div>
+                <label for="player-one-effort">Reasoning Effort</label>
+                <select
+                  id="player-one-effort"
+                  bind:value={playerOneEffort}
+                  class="player-select"
+                  disabled={waitingOnPlayerOneAI}
+                >
+                  <option value="" disabled>Choose effort...</option>
+                  <option value="high">high</option>
+                  <option value="medium">medium</option>
+                  <option value="low">low</option>
+                  <option value="minimal">minimal</option>
+                </select>
+              </div>
+            {/if}
+          </div>
+          <div class="selector">
+            <div>
+              <label for="player-two-type"
+                >{game.gameName === 'go-9x9' || game.gameName === 'shove'
+                  ? 'White'
+                  : game.gameName === 'regular-chess' || game.gameName === 'fantastical-chess'
+                    ? 'Black'
+                    : 'Yellow'}</label
+              >
+              <select
+                id="player-two-type"
+                bind:value={playerTwoType}
+                class="player-select"
+                disabled={waitingOnPlayerTwoAI}
+              >
+                <option>Human</option>
+                <option>Random</option>
+                <option>AI Model</option>
+              </select>
+            </div>
+            <div>
+              {#if playerTwoType === 'AI Model'}
+                <label for="player-two-model">Model</label>
+                <select
+                  id="player-two-model"
+                  bind:value={playerTwoModel}
+                  class="player-select"
+                  disabled={waitingOnPlayerTwoAI}
+                >
+                  <option value="" disabled>Choose a model...</option>
+                  <option>GPT-3.5-turbo (v0613; June 2023)</option>
+                  <option>GPT-4o (2024-05-13; May 2024)</option>
+                  <option>GPT-4.1 (April 2025)</option>
+                  <option>GPT-5 (August 2025)</option>
+                </select>
+              {/if}
+            </div>
+            {#if playerTwoType === 'AI Model' && modelSupportsReasoning(playerTwoModel)}
+              <div>
+                <label for="player-two-effort">Reasoning Effort</label>
+                <select
+                  id="player-two-effort"
+                  bind:value={playerTwoEffort}
+                  class="player-select"
+                  disabled={waitingOnPlayerTwoAI}
+                >
+                  <option value="" disabled>Choose effort...</option>
+                  <option value="high">high</option>
+                  <option value="medium">medium</option>
+                  <option value="low">low</option>
+                  <option value="minimal">minimal</option>
+                </select>
+              </div>
+            {/if}
+          </div>
         </div>
-      </div>
 
-      {#if game.gameName === '4-in-a-row' || game.gameName === 'hugs-and-kisses'}
-        <FourInARowUI {game} {humanCanMove} on:move={forwardMove} />
-      {:else if game.gameName === 'go-9x9'}
-        <GoUI {game} {humanCanMove} on:move={forwardMove} />
-      {:else if game.gameName === 'shove'}
-        <ShoveUI bind:this={shoveRef} {game} {humanCanMove} on:move={forwardMove} />
-      {:else}
-        <ChessUI {game} {humanCanMove} on:move={forwardMove} />
-      {/if}
-      <div class="message-area">{statusMessage}</div>
+        {#if game.gameName === '4-in-a-row' || game.gameName === 'hugs-and-kisses'}
+          <FourInARowUI {game} {humanCanMove} on:move={forwardMove} />
+        {:else if game.gameName === 'go-9x9'}
+          <GoUI {game} {humanCanMove} on:move={forwardMove} />
+        {:else if game.gameName === 'shove'}
+          <ShoveUI bind:this={shoveRef} {game} {humanCanMove} on:move={forwardMove} />
+        {:else}
+          <ChessUI {game} {humanCanMove} on:move={forwardMove} />
+        {/if}
+        <div class="message-area">{statusMessage}</div>
 
-      <div class="controls">
-        <button onclick={restart} class="restart-btn"> Restart Game </button>
-        <button onclick={undo} class="undo-btn"> Undo </button>
+        <div class="controls">
+          <button onclick={restart} class="restart-btn"> Restart Game </button>
+          <button onclick={undo} class="undo-btn"> Undo </button>
+        </div>
       </div>
     </div>
   </div>
@@ -376,12 +378,23 @@
     padding: 1rem;
   }
 
+  .scroll-x {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+
   .card {
     padding: 1rem;
     background-color: white;
     border: 1px solid #111111;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: max-content;
+    max-width: none;
+    margin-inline: auto;
   }
 
   .selector {
@@ -395,6 +408,12 @@
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
     margin-bottom: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .player-selectors {
+      grid-template-columns: 1fr;
+    }
   }
 
   .player-select {

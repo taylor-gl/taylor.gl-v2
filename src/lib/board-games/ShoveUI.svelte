@@ -19,6 +19,10 @@
   const isGameOver = $derived(SH.gameIsOver(game));
   const gameOverText = $derived(SH.gameOverText(game));
 
+  // Current turn (a turn is two moves: Black then White)
+  const movesMade = $derived(game.history.length - 1);
+  const turn = $derived(Math.floor(movesMade / 2) + 1);
+
   const legalMoves = $derived(SH.getAllValidMoves(game));
   const legalPlaceSet = $derived(
     new Set(legalMoves.filter((m) => m.type === 'place').map((m) => `${m.row},${m.col}`))
@@ -676,6 +680,7 @@
         {/each}
       </div>
     {/if}
+    <div class="turn-indicator" aria-live="polite">Turn: {Math.min(50, turn)}/50</div>
   </div>
 
   <div class="controls">
@@ -841,6 +846,16 @@
     font-size: 2rem;
     font-weight: bold;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .turn-indicator {
+    position: absolute;
+    left: calc(var(--cell) * 0.2);
+    bottom: calc(var(--cell) * 0.2);
+    color: #ffffff;
+    font-weight: 700;
+    z-index: 2;
+    pointer-events: none;
   }
 
   .dir-layer {

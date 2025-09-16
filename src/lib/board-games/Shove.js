@@ -320,6 +320,13 @@ export function makeMove(game, move) {
       const { winner } = scoreFinalPosition(newGame.board);
       newGame.gameOver = winner || 'draw';
     }
+    if (!newGame.gameOver) {
+      const movesMade = newGame.history.length - 1;
+      if (movesMade >= 100) {
+        const { winner } = scoreFinalPosition(newGame.board);
+        newGame.gameOver = winner || 'draw';
+      }
+    }
     return Object.freeze(newGame);
   }
 
@@ -361,6 +368,14 @@ export function makeMove(game, move) {
   if (isBoardFull(newBoard) || onlySuicidalPlacementsRemain(newGame)) {
     const { winner } = scoreFinalPosition(newBoard);
     newGame.gameOver = winner || 'draw';
+  }
+
+  if (!newGame.gameOver) {
+    const movesMade = newGame.history.length - 1;
+    if (movesMade >= 100) {
+      const { winner } = scoreFinalPosition(newBoard);
+      newGame.gameOver = winner || 'draw';
+    }
   }
 
   return Object.freeze(newGame);
@@ -419,8 +434,11 @@ export function boardToString(board) {
 export function gameStateToString(game) {
   const latestState = game.history[game.history.length - 1];
   const latestMove = latestState?.move;
+  const movesMade = game.history.length - 1;
+  const turn = Math.floor(movesMade / 2) + 1;
   // Return game state in the following format:
   // Player: white
+  // Turn: 1/50
   // Previous Move: A5U
   // Game Status: ongoing
   // Board:
@@ -434,6 +452,7 @@ export function gameStateToString(game) {
   // 1 . . . . . W B
   return `
 Player: ${game.currentPlayer}
+Turn: ${Math.min(50, turn)}/50
 Previous Move: ${latestMove ? moveToMoveStr(latestMove) : 'None'}
 Game Status: ${getGameStatus(game)}
 Board:
@@ -449,8 +468,8 @@ Shove (7x7) rules:
 - A connected group of stones is formed by stones of the same color connected orthogonally (up/down/left/right).
 - Pushing cascades: if a destination is occupied, that stone is pushed one cell further in the same direction, and so on. Stones pushed off the board fall into the gutter and are removed.
 - Boulders (a 2x2 same-color grouping of stones) are not counted as part of a connected group. If any shove would need to move a boulder, that shove direction is illegal. A stone placed with no legal shove direction is placed without shoving.
-- Instead of moving, a player may pass their turn.  
-- Two consecutive passes end the game. The game also ends if the board is full, or if the only remaining legal moves are placing stones and then immediately shoving them into the gutter.
+- Instead of moving, a player may pass their turn.
+- Two consecutive passes end the game. The game also ends if the board is full, or if the only remaining legal moves are placing stones and then immediately shoving them into the gutter. After 50 turns, the game ends. A turn is two moves: one by Black followed by one by White.
 - Ko/superko: You may not play a move that recreates any previous board position.
 - Scoring: the player with the greatest number of stones on the board wins. Draws are possible.
 
