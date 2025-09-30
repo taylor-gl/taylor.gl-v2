@@ -29,6 +29,8 @@
 
   let playerOneModel = $state('');
   let playerTwoModel = $state('');
+  let playerOneCustomModel = $state('');
+  let playerTwoCustomModel = $state('');
   let playerOneEffort = $state('');
   let playerTwoEffort = $state('');
   let apiKeyFocused = $state(false);
@@ -59,12 +61,14 @@
     void playerOneType;
     if (playerOneType !== 'AI Model' && playerOneModel) {
       playerOneModel = '';
+      playerOneCustomModel = '';
     }
   });
   $effect(() => {
     void playerTwoType;
     if (playerTwoType !== 'AI Model' && playerTwoModel) {
       playerTwoModel = '';
+      playerTwoCustomModel = '';
     }
   });
 
@@ -116,6 +120,15 @@
     cancelAIMoveInProgress();
     dispatch('changeGame', { gameName: name });
     statusMessage = '';
+    // Reset player state like restart does
+    playerOneType = 'Human';
+    playerTwoType = 'Human';
+    playerOneModel = '';
+    playerTwoModel = '';
+    playerOneCustomModel = '';
+    playerTwoCustomModel = '';
+    playerOneEffort = '';
+    playerTwoEffort = '';
   }
 
   $effect(() => {
@@ -141,14 +154,26 @@
           waitingOnAi = false;
         }, 1000);
       } else if (currentType === 'AI Model') {
-        const model = currentPlayer === 'playerOne' ? playerOneModel : playerTwoModel;
+        const modelSelection = currentPlayer === 'playerOne' ? playerOneModel : playerTwoModel;
+        const customModel =
+          currentPlayer === 'playerOne' ? playerOneCustomModel : playerTwoCustomModel;
+        const effortSelected = currentPlayer === 'playerOne' ? playerOneEffort : playerTwoEffort;
+
+        let model = modelSelection;
+        if (model === 'Custom') {
+          model = customModel;
+        }
+
         if (!openRouterApiKey || !model) {
           statusMessage = '';
           waitingOnAi = false;
           return;
         }
-        const effortSelected = currentPlayer === 'playerOne' ? playerOneEffort : playerTwoEffort;
-        if (modelSupportsReasoning(model) && !effortSelected) {
+
+        if (
+          (modelSupportsReasoning(modelSelection) || modelSelection === 'Custom') &&
+          !effortSelected
+        ) {
           statusMessage = 'Please choose a reasoning effort for the selected model.';
           waitingOnAi = false;
           return;
@@ -159,6 +184,7 @@
           let attempt = 0;
           let chosenMove = null;
           let lastError = '';
+          let wasApiError = false;
           while (attempt < 5 && !chosenMove) {
             attempt++;
             statusMessage = `The AI is thinking... ${attempt > 1 ? ` (attempt ${attempt})` : ''}`;
@@ -169,6 +195,10 @@
             } else if (result.error) {
               lastError = result.error;
               statusMessage = result.error;
+              if (result.isApiError) {
+                wasApiError = true;
+                break;
+              }
             } else {
               lastError = 'Unknown error getting move from the AI model.';
               statusMessage = lastError;
@@ -178,13 +208,20 @@
             dispatch('move', chosenMove);
             statusMessage = '';
             waitingOnAi = false;
+          } else if (wasApiError) {
+            if (currentPlayer === 'playerOne') {
+              playerOneType = 'Human';
+              playerOneEffort = '';
+            } else {
+              playerTwoType = 'Human';
+              playerTwoEffort = '';
+            }
+            waitingOnAi = false;
           } else {
-            if (game.gameName === '4-in-a-row' || game.gameName === 'hugs-and-kisses') {
-              if (currentPlayer === 'playerOne') {
-                playerOneType = 'Human';
-              } else {
-                playerTwoType = 'Human';
-              }
+            if (currentPlayer === 'playerOne') {
+              playerOneType = 'Human';
+            } else {
+              playerTwoType = 'Human';
             }
             waitingOnAi = false;
           }
@@ -272,10 +309,26 @@
                   <option>GPT-4o (2024-05-13; May 2024)</option>
                   <option>GPT-4.1 (April 2025)</option>
                   <option>GPT-5 (August 2025)</option>
+                  <option>Custom</option>
                 </select>
               {/if}
             </div>
-            {#if playerOneType === 'AI Model' && modelSupportsReasoning(playerOneModel)}
+            {#if playerOneModel === 'Custom'}
+              <div>
+                <label for="player-one-custom-model">Custom Model Name</label>
+                <input
+                  id="player-one-custom-model"
+                  bind:value={playerOneCustomModel}
+                  class="player-select"
+                  type="text"
+                  placeholder="e.g., openai/gpt-4o"
+                  disabled={waitingOnPlayerOneAI}
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+              </div>
+            {/if}
+            {#if playerOneType === 'AI Model' && (modelSupportsReasoning(playerOneModel) || playerOneModel === 'Custom')}
               <div>
                 <label for="player-one-effort">Reasoning Effort</label>
                 <select
@@ -285,6 +338,7 @@
                   disabled={waitingOnPlayerOneAI}
                 >
                   <option value="" disabled>Choose effort...</option>
+                  <option value="none">None</option>
                   <option value="high">high</option>
                   <option value="medium">medium</option>
                   <option value="low">low</option>
@@ -327,10 +381,26 @@
                   <option>GPT-4o (2024-05-13; May 2024)</option>
                   <option>GPT-4.1 (April 2025)</option>
                   <option>GPT-5 (August 2025)</option>
+                  <option>Custom</option>
                 </select>
               {/if}
             </div>
-            {#if playerTwoType === 'AI Model' && modelSupportsReasoning(playerTwoModel)}
+            {#if playerTwoModel === 'Custom'}
+              <div>
+                <label for="player-two-custom-model">Custom Model Name</label>
+                <input
+                  id="player-two-custom-model"
+                  bind:value={playerTwoCustomModel}
+                  class="player-select"
+                  type="text"
+                  placeholder="e.g., openai/gpt-4o"
+                  disabled={waitingOnPlayerTwoAI}
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+              </div>
+            {/if}
+            {#if playerTwoType === 'AI Model' && (modelSupportsReasoning(playerTwoModel) || playerTwoModel === 'Custom')}
               <div>
                 <label for="player-two-effort">Reasoning Effort</label>
                 <select
@@ -340,6 +410,7 @@
                   disabled={waitingOnPlayerTwoAI}
                 >
                   <option value="" disabled>Choose effort...</option>
+                  <option value="none">None</option>
                   <option value="high">high</option>
                   <option value="medium">medium</option>
                   <option value="low">low</option>
@@ -445,6 +516,10 @@
   .message-area {
     min-height: 1.25rem;
     margin-top: 1rem;
+    max-width: 560px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
   }
 
   .controls {

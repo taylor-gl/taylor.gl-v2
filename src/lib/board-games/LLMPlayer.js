@@ -30,12 +30,13 @@ export async function getLlmMove(game, apiKey, model, effort) {
     }
     if (move == null) {
       console.error('Invalid move from the AI model.');
-      return { move: null, error: 'Invalid move from the AI model.' };
+      return { move: null, error: 'Invalid move from the AI model.', isApiError: false };
     }
     return { move };
   } catch (error) {
     console.error('Error getting move from the AI model.', error);
-    return { move: null, error: 'Error getting move from the AI model.' };
+    const errorMessage = error.message || 'Error getting move from the AI model.';
+    return { move: null, error: errorMessage, isApiError: true };
   }
 }
 
@@ -50,7 +51,7 @@ function getModelString(model) {
     case 'GPT-3.5-turbo (v0613; June 2023)':
       return 'openai/gpt-3.5-turbo-0613';
     default:
-      return null;
+      return model || null;
   }
 }
 
@@ -91,9 +92,29 @@ async function queryAPI(prompt, model, apiKey, effort) {
     case 'GPT-3.5-turbo (v0613; June 2023)':
       reasoningParams = { enabled: false };
       break;
+    default:
+      if (effort && effort !== '' && effort !== 'none') {
+        reasoningParams = {
+          enabled: true,
+          effort: effort,
+          exclude: true,
+        };
+      } else {
+        reasoningParams = { enabled: false };
+      }
+      break;
   }
 
   console.log('Querying AI model: ', modelString);
+
+  const requestBody = {
+    model: modelString,
+    messages: [{ role: 'user', content: [{ type: 'text', text: prompt }] }],
+  };
+
+  if (reasoningParams && reasoningParams.enabled) {
+    requestBody.reasoning = reasoningParams;
+  }
 
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
@@ -101,12 +122,7 @@ async function queryAPI(prompt, model, apiKey, effort) {
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      model: modelString,
-      messages: [{ role: 'user', content: [{ type: 'text', text: prompt }] }],
-      verbosity: 'low',
-      reasoning: reasoningParams,
-    }),
+    body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {
