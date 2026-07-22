@@ -128,7 +128,6 @@
   const { data } = $props();
 
   let justCopied = $state(false);
-  let justDownloaded = $state(false);
   let justCopiedSocial = $state(false);
   let socialCopyLabel = $state('Copy Email Address');
   let prefersReducedMotion = $state(false);
@@ -184,20 +183,6 @@
         justCopiedSocial = false;
         socialCopyLabel = 'Copy Email Address';
       }, 1000);
-    }
-  };
-
-  const downloadResume = () => {
-    if (!justDownloaded) {
-      playPopSound();
-      const link = document.createElement('a');
-      link.href = '/Taylor_G_Lunt_Resume.pdf';
-      link.download = '/Taylor_G_Lunt_Resume.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      justDownloaded = true;
-      setTimeout(() => (justDownloaded = false), 1000);
     }
   };
 </script>
@@ -268,30 +253,6 @@
                 aria-hidden="true"
               ></iconify-icon>
               <span>Copy my Email Address</span>
-            </div>
-          {/if}
-        </div>
-      </GlowButton>
-      <GlowButton onClick={downloadResume}>
-        <div class="grid" aria-live="polite">
-          {#if justDownloaded}
-            <div
-              class="col-start-1 col-end-2 row-start-1 row-end-2"
-              out:blur={prefersReducedMotion ? { duration: 0 } : { duration: 500 }}
-            >
-              <span>Downloaded!</span>
-            </div>
-          {:else}
-            <div
-              class="col-start-1 col-end-2 row-start-1 row-end-2"
-              in:blur={prefersReducedMotion ? { duration: 0 } : { delay: 500, duration: 1000 }}
-            >
-              <iconify-icon
-                icon="carbon:document-pdf"
-                class="pr-2 align-middle text-2xl"
-                aria-hidden="true"
-              ></iconify-icon>
-              <span>Download my Resume</span>
             </div>
           {/if}
         </div>
