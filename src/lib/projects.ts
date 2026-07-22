@@ -14,6 +14,7 @@ export interface Project {
   technologies: string[];
   projectUrl: string;
   sourceUrl: string | null;
+  featured: boolean;
 }
 
 export function getProjects(): Project[] {
@@ -36,6 +37,7 @@ export function getProjects(): Project[] {
         technologies: (data.technologies as string[]) || [],
         projectUrl: data.projectUrl as string,
         sourceUrl: data.sourceUrl as string | null,
+        featured: data.featured === true,
       };
     })
     .sort((a, b) => parseInt(b.slug, 10) - parseInt(a.slug, 10));

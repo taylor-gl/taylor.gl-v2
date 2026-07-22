@@ -3,7 +3,9 @@ import { getProjects } from '$lib/projects';
 
 export function entries() {
   const projects = getProjects();
-  return projects.map((project) => ({ slug: project.slug }));
+  return projects
+    .filter((project) => project.content.trim() !== '')
+    .map((project) => ({ slug: project.slug }));
 }
 
 export const load = async ({ params }: { params: { slug: string } }) => {
@@ -11,7 +13,7 @@ export const load = async ({ params }: { params: { slug: string } }) => {
   const projects = getProjects();
   const project = projects.find((p) => p.slug === slug);
 
-  if (!project) {
+  if (!project || project.content.trim() === '') {
     throw error(404, 'Project not found');
   }
 

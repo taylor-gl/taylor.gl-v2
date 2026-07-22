@@ -2,9 +2,12 @@
   import type { Project } from '$lib/projects';
   import TextBubble from './TextBubble.svelte';
 
-  const { project, size = 'normal' } = $props<{ project: Project; size?: 'normal' | 'large' }>();
+  const { project, size = 'normal' } = $props<{
+    project: Project;
+    size?: 'normal' | 'large' | 'featured';
+  }>();
 
-  const cardHeight = size === 'large' ? 'h-96' : 'h-80';
+  const cardHeight = size === 'featured' ? 'h-[28rem]' : size === 'large' ? 'h-96' : 'h-80';
 </script>
 
 <div class="block no-underline">
@@ -55,12 +58,14 @@
           </div>
         </div>
         <div class="ml-4 flex gap-3">
-          <a
-            href="/projects/{project.slug}"
-            class="text-sm text-slate-600 underline hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
-          >
-            write-up
-          </a>
+          {#if !project.featured}
+            <a
+              href="/projects/{project.slug}"
+              class="text-sm text-slate-600 underline hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
+            >
+              write-up
+            </a>
+          {/if}
           {#if project.projectUrl}
             <a
               href={project.projectUrl}
@@ -79,7 +84,7 @@
               rel="noopener noreferrer"
               class="flex items-center gap-1 text-sm text-slate-600 underline hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100"
             >
-              view source
+              {project.featured ? 'see on github' : 'view source'}
               <iconify-icon icon="carbon:launch" class="text-xs" aria-hidden="true"></iconify-icon>
             </a>
           {/if}

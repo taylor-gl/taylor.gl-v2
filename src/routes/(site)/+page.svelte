@@ -384,7 +384,13 @@
       </h2>
       <div class="grid gap-8 md:grid-cols-2">
         {#each projects as project (project.slug)}
-          <ProjectCard {project} />
+          {#if project.featured}
+            <div class="md:col-span-2">
+              <ProjectCard {project} size="featured" />
+            </div>
+          {:else}
+            <ProjectCard {project} />
+          {/if}
         {/each}
       </div>
     </section>
