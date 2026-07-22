@@ -291,10 +291,10 @@
           <div class="mt-8 flex flex-row flex-wrap gap-2">
             <TextBubble>React</TextBubble>
             <TextBubble>TypeScript</TextBubble>
-            <TextBubble>HTML & CSS</TextBubble>
-            <TextBubble>Elixir</TextBubble>
-            <TextBubble>Postgresql</TextBubble>
+            <TextBubble>Elixir/Phoenix</TextBubble>
+            <TextBubble>Postgres/SQL</TextBubble>
             <TextBubble>Elasticsearch</TextBubble>
+            <TextBubble>ClickHouse</TextBubble>
           </div>
         </HistoryItem>
         <ArrowSection />
